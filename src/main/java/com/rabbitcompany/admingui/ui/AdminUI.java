@@ -1,10 +1,10 @@
 package com.rabbitcompany.admingui.ui;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.rabbitcompany.adminbans.AdminBansAPI;
 import com.rabbitcompany.adminbans.utils.BannedPlayer;
 import com.rabbitcompany.adminbans.utils.MutedPlayer;
 import com.rabbitcompany.admingui.AdminGUI;
-import com.rabbitcompany.admingui.XMaterial;
 import com.rabbitcompany.admingui.utils.*;
 import com.rabbitcompany.admingui.utils.potions.Version_12;
 import com.rabbitcompany.admingui.utils.potions.Version_14;
@@ -1809,7 +1809,7 @@ public class AdminUI {
 	public void clicked_plugins(Player p, int slot, ItemStack clicked, Inventory inv) {
 		if (InventoryGUI.getClickedItem(clicked, Message.getMessage(p.getUniqueId(), "plugins_back"))) {
 			p.openInventory(GUI_Main(p));
-		} else if (clicked.getType() != Material.AIR && clicked.getType() != XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE.parseMaterial()) {
+		} else if (clicked.getType() != Material.AIR && clicked.getType() != XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE.get()) {
 			Settings.plugin_slot.put(p.getUniqueId(), slot + 1);
 			p.openInventory(GUI_Commands(p, slot + 1));
 		}
@@ -1819,7 +1819,7 @@ public class AdminUI {
 		slot++;
 		if (InventoryGUI.getClickedItem(clicked, Message.getMessage(p.getUniqueId(), "commands_back"))) {
 			p.openInventory(GUI_Plugins(p));
-		} else if (clicked.getType() != Material.AIR && clicked.getType() != XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE.parseMaterial() && clicked.getType() != XMaterial.RED_STAINED_GLASS_PANE.parseMaterial()) {
+		} else if (clicked.getType() != Material.AIR && clicked.getType() != XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE.get() && clicked.getType() != XMaterial.RED_STAINED_GLASS_PANE.get()) {
 			YamlConfiguration yamlConfiguration;
 
 			switch (Settings.custom_method.getOrDefault(p.getUniqueId(), 0)) {

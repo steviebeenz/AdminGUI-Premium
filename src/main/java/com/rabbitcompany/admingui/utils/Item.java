@@ -1,7 +1,6 @@
 package com.rabbitcompany.admingui.utils;
 
-import com.rabbitcompany.admingui.XMaterial;
-import org.bukkit.SkullType;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,7 +14,7 @@ public class Item {
 		ItemStack item;
 		ArrayList<String> lore = new ArrayList<>();
 
-		item = new ItemStack(XMaterial.matchXMaterial(material).get().parseMaterial(), amount, XMaterial.matchXMaterial(material).get().getData());
+		item = new ItemStack(XMaterial.matchXMaterial(material).get().get(), amount, XMaterial.matchXMaterial(material).get().getData());
 
 		ItemMeta meta = item.getItemMeta();
 		if (meta != null) {
@@ -30,35 +29,57 @@ public class Item {
 	}
 
 	public static ItemStack createPlayerHead(Inventory inv, String player, int amount, int invSlot, String displayName, String... loreString) {
-		ItemStack item;
+		ItemStack item = new ItemStack(XMaterial.PLAYER_HEAD.get(), amount);
+
 		ArrayList<String> lore = new ArrayList<>();
 
-		item = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), amount, (short) SkullType.PLAYER.ordinal());
-
-		SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-
-		skullMeta.setOwner(player);
-		skullMeta.setDisplayName(Message.chat(displayName));
-		item.setItemMeta(skullMeta);
-
 		ItemMeta meta = item.getItemMeta();
+		if (meta instanceof SkullMeta) {
+			SkullMeta skullMeta = (SkullMeta) meta;
 
-		for (String s : loreString) lore.add(Message.chat(s));
+			try {
+				skullMeta.setOwningPlayer(org.bukkit.Bukkit.getOfflinePlayer(player));
+			} catch (Throwable ignored) {
+				try {
+					skullMeta.setOwner(player);
+				} catch (Throwable ignoredAgain) {
+					// Leave as plain player head if both fail
+				}
+			}
 
-		meta.setLore(lore);
-		item.setItemMeta(meta);
+			skullMeta.setDisplayName(Message.chat(displayName));
+
+			for (String s : loreString) {
+				lore.add(Message.chat(s));
+			}
+
+			skullMeta.setLore(lore);
+			item.setItemMeta(skullMeta);
+		}
+
 		inv.setItem(invSlot - 1, item);
 		return item;
 	}
 
 	public static ItemStack pre_createPlayerHead(String player) {
-		ItemStack item;
+		ItemStack item = new ItemStack(XMaterial.PLAYER_HEAD.get(), 1);
 
-		item = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1, (short) SkullType.PLAYER.ordinal());
+		ItemMeta meta = item.getItemMeta();
+		if (meta instanceof SkullMeta) {
+			SkullMeta skullMeta = (SkullMeta) meta;
 
-		SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-		if (skullMeta != null) {
-			skullMeta.setOwner(player);
+			try {
+				// Modern Bukkit/Paper method
+				skullMeta.setOwningPlayer(org.bukkit.Bukkit.getOfflinePlayer(player));
+			} catch (Throwable ignored) {
+				// Legacy 1.8 fallback
+				try {
+					skullMeta.setOwner(player);
+				} catch (Throwable ignoredAgain) {
+					// Leave as plain player head if both fail
+				}
+			}
+
 			skullMeta.setDisplayName(Message.chat(player));
 			item.setItemMeta(skullMeta);
 		}

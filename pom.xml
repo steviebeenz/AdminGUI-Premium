@@ -6,7 +6,7 @@
 
     <groupId>com.rabbitcompany</groupId>
     <artifactId>AdminGUI-Premium</artifactId>
-    <version>5.15.0</version>
+    <version>6.0.0</version>
     <packaging>jar</packaging>
 
     <name>AdminGUI Premium</name>
@@ -17,61 +17,84 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <build>
-        <defaultGoal>clean package</defaultGoal>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-							<relocations>
-                                <relocation>
-                                    <pattern>com.zaxxer.hikari</pattern>
-                                    <shadedPattern>com.rabbitcompany.libraries.hikari</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-    </build>
+		<build>
+			<defaultGoal>clean package</defaultGoal>
+
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.13.0</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>3.6.0</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>shade</goal>
+							</goals>
+							<configuration>
+								<createDependencyReducedPom>false</createDependencyReducedPom>
+
+								<relocations>
+									<relocation>
+										<pattern>com.zaxxer.hikari</pattern>
+										<shadedPattern>com.rabbitcompany.libraries.hikari</shadedPattern>
+									</relocation>
+
+									<relocation>
+										<pattern>com.cryptomorin.xseries</pattern>
+										<shadedPattern>com.rabbitcompany.libraries.xseries</shadedPattern>
+									</relocation>
+								</relocations>
+
+								<filters>
+									<filter>
+										<artifact>*:*</artifact>
+										<excludes>
+											<exclude>com/cryptomorin/xseries/XBiome*</exclude>
+											<exclude>com/cryptomorin/xseries/NMSExtras*</exclude>
+											<exclude>com/cryptomorin/xseries/NoteBlockMusic*</exclude>
+											<exclude>com/cryptomorin/xseries/SkullCacheListener*</exclude>
+										</excludes>
+									</filter>
+								</filters>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+
+			<resources>
+				<resource>
+					<directory>src/main/resources</directory>
+					<filtering>true</filtering>
+				</resource>
+			</resources>
+		</build>
 
     <repositories>
         <repository>
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
+				<!-- (XSeries) XSkull -->
+				<repository>
+					<id>minecraft-libraries</id>
+					<name>Minecraft Libraries</name>
+					<url>https://libraries.minecraft.net/</url>
+				</repository>
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>husk</id>
-            <url>https://maven.husk.pro/repository/internal/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -95,6 +118,18 @@
             <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+				<!-- (XSeries) XSkull -->
+				<dependency>
+					<groupId>com.mojang</groupId>
+					<artifactId>authlib</artifactId>
+					<version>6.0.54</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>com.github.cryptomorin</groupId>
+					<artifactId>XSeries</artifactId>
+					<version>13.7.0</version>
+				</dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
@@ -122,7 +157,7 @@
         <dependency>
             <groupId>com.github.zigazajc007</groupId>
             <artifactId>AdminBans</artifactId>
-            <version>v2.0.0</version>
+            <version>6675d62</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -140,7 +175,7 @@
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
-            <version>1.25.0</version>
+            <version>1.28.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

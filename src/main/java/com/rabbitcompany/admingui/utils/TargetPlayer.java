@@ -1,8 +1,8 @@
 package com.rabbitcompany.admingui.utils;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.rabbitcompany.adminbans.AdminBansAPI;
 import com.rabbitcompany.admingui.AdminGUI;
-import com.rabbitcompany.admingui.XMaterial;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -181,7 +181,7 @@ public class TargetPlayer {
 
 	public static void giveAdminTools(Player player, int slot) {
 		List<String> lore = Collections.singletonList(Message.chat(AdminGUI.getInstance().getConf().getString("admin_tools_lore", "&dClick me to open Admin GUI")));
-		ItemStack item = new ItemStack(XMaterial.matchXMaterial(AdminGUI.getInstance().getConf().getString("admin_tools_material", "NETHER_STAR")).get().parseMaterial(), 1, XMaterial.matchXMaterial(AdminGUI.getInstance().getConf().getString("admin_tools_material", "NETHER_STAR")).get().getData());
+		ItemStack item = new ItemStack(XMaterial.matchXMaterial(AdminGUI.getInstance().getConf().getString("admin_tools_material", "NETHER_STAR")).get().get(), 1, XMaterial.matchXMaterial(AdminGUI.getInstance().getConf().getString("admin_tools_material", "NETHER_STAR")).get().getData());
 
 		if (AdminGUI.getInstance().getConf().getBoolean("admin_tools_enchantment", false)) {
 			item.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
